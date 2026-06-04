@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Authentication elements
   const loginButton = document.getElementById("login-button");
   const themeToggleButton = document.getElementById("theme-toggle-button");
+  const themeToggleIcon = document.getElementById("theme-toggle-icon");
   const themeToggleLabel = document.getElementById("theme-toggle-label");
   const userInfo = document.getElementById("user-info");
   const displayName = document.getElementById("display-name");
@@ -55,43 +56,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Theme mode storage key
   const THEME_STORAGE_KEY = "themeMode";
+  const VALID_THEMES = new Set(["light", "dark"]);
 
   function setThemeButtonState(mode) {
     const isDarkMode = mode === "dark";
-    themeToggleButton.setAttribute(
-      "aria-label",
-      isDarkMode ? "Switch to light mode" : "Switch to dark mode"
-    );
-    themeToggleLabel.textContent = isDarkMode ? "Light" : "Dark";
+    themeToggleIcon.textContent = isDarkMode ? "☀️" : "🌙";
+    themeToggleLabel.textContent = isDarkMode
+      ? "Switch to Light"
+      : "Switch to Dark";
+  }
+
+  function normalizeTheme(mode) {
+    return VALID_THEMES.has(mode) ? mode : "light";
   }
 
   function applyTheme(mode) {
-    if (mode === "dark") {
+    const appliedTheme = normalizeTheme(mode);
+
+    if (appliedTheme === "dark") {
       document.body.classList.add("dark-mode");
       setThemeButtonState("dark");
-      return;
+      return "dark";
     }
 
     document.body.classList.remove("dark-mode");
     setThemeButtonState("light");
+    return "light";
   }
 
   function initializeTheme() {
     const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
     const defaultTheme =
-      window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
-    applyTheme(savedTheme || defaultTheme);
+    const preferredTheme = VALID_THEMES.has(savedTheme)
+      ? savedTheme
+      : defaultTheme;
+    const appliedTheme = applyTheme(preferredTheme);
+    if (savedTheme && savedTheme !== appliedTheme) {
+      localStorage.setItem(THEME_STORAGE_KEY, appliedTheme);
+    }
   }
 
   function toggleTheme() {
     const nextTheme = document.body.classList.contains("dark-mode")
       ? "light"
       : "dark";
-    applyTheme(nextTheme);
-    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    const appliedTheme = applyTheme(nextTheme);
+    localStorage.setItem(THEME_STORAGE_KEY, appliedTheme);
   }
 
   // Initialize filters from active elements
