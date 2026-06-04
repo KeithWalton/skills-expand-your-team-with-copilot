@@ -305,13 +305,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getShareLinks(activityName) {
-    const activityUrl = `${window.location.origin}/#activity=${encodeURIComponent(
+    const activityUrl = `${window.location.origin}/?activity=${encodeURIComponent(
       activityName
     )}`;
     const shareText = `Check out "${activityName}" at Mergington High School!`;
 
     return {
-      x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      x: `https://x.com/intent/tweet?text=${encodeURIComponent(
         shareText
       )}&url=${encodeURIComponent(activityUrl)}`,
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
