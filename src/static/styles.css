@@ -198,6 +198,12 @@ section h3 {
   flex-wrap: wrap;
 }
 
+.share-links {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .share-label {
   font-size: 0.75rem;
   font-weight: 600;
