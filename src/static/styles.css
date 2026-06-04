@@ -32,6 +32,32 @@
   --info-light: #d1ecf1;
 }
 
+body.dark-mode {
+  --primary: #0f172a;
+  --primary-light: #1e293b;
+  --primary-dark: #020617;
+  --primary-text: #e2e8f0;
+  --secondary: #f59e0b;
+  --secondary-light: #fbbf24;
+  --secondary-dark: #d97706;
+  --secondary-text: #111827;
+  --background: #0b1220;
+  --surface: #111827;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --border: #374151;
+  --border-light: #1f2937;
+  --border-focus: #4b5563;
+  --success: #4ade80;
+  --success-light: #14532d;
+  --warning: #facc15;
+  --warning-light: #78350f;
+  --error: #f87171;
+  --error-light: #7f1d1d;
+  --info: #38bdf8;
+  --info-light: #0c4a6e;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -665,6 +691,7 @@ footer {
 #user-status {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 #user-info {

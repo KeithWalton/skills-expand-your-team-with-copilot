@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Authentication elements
   const loginButton = document.getElementById("login-button");
+  const themeToggleButton = document.getElementById("theme-toggle-button");
+  const themeToggleIcon = document.getElementById("theme-toggle-icon");
+  const themeToggleLabel = document.getElementById("theme-toggle-label");
   const userInfo = document.getElementById("user-info");
   const displayName = document.getElementById("display-name");
   const logoutButton = document.getElementById("logout-button");
@@ -52,6 +55,59 @@ document.addEventListener("DOMContentLoaded", () => {
     afternoon: { start: "15:00", end: "18:00" }, // After school hours
     weekend: { days: ["Saturday", "Sunday"] }, // Weekend days
   };
+
+  // Theme mode storage key
+  const THEME_STORAGE_KEY = "themeMode";
+  const VALID_THEMES = new Set(["light", "dark"]);
+
+  function setThemeButtonState(mode) {
+    const isDarkMode = mode === "dark";
+    themeToggleIcon.textContent = isDarkMode ? "☀️" : "🌙";
+    themeToggleLabel.textContent = isDarkMode
+      ? "Switch to Light"
+      : "Switch to Dark";
+  }
+
+  function normalizeTheme(mode) {
+    return VALID_THEMES.has(mode) ? mode : "light";
+  }
+
+  function applyTheme(mode) {
+    const appliedTheme = normalizeTheme(mode);
+
+    if (appliedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+      setThemeButtonState("dark");
+      return "dark";
+    }
+
+    document.body.classList.remove("dark-mode");
+    setThemeButtonState("light");
+    return "light";
+  }
+
+  function initializeTheme() {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    const defaultTheme =
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    const preferredTheme = VALID_THEMES.has(savedTheme)
+      ? savedTheme
+      : defaultTheme;
+    const appliedTheme = applyTheme(preferredTheme);
+    if (savedTheme && savedTheme !== appliedTheme) {
+      localStorage.setItem(THEME_STORAGE_KEY, appliedTheme);
+    }
+  }
+
+  function toggleTheme() {
+    const nextTheme = document.body.classList.contains("dark-mode")
+      ? "light"
+      : "dark";
+    const appliedTheme = applyTheme(nextTheme);
+    localStorage.setItem(THEME_STORAGE_KEY, appliedTheme);
+  }
 
   // Initialize filters from active elements
   function initializeFilters() {
@@ -237,6 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Event listeners for authentication
+  themeToggleButton.addEventListener("click", toggleTheme);
   loginButton.addEventListener("click", openLoginModal);
   logoutButton.addEventListener("click", logout);
   closeLoginModal.addEventListener("click", closeLoginModalHandler);
@@ -940,6 +997,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Initialize app
+  initializeTheme();
   checkAuthentication();
   initializeFilters();
   fetchActivities();
