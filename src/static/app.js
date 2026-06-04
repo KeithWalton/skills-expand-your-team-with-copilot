@@ -311,7 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const shareText = `Check out "${activityName}" at Mergington High School!`;
 
     return {
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         shareText
       )}&url=${encodeURIComponent(activityUrl)}`,
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
@@ -574,9 +574,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="share-actions">
         <span class="share-label">Share:</span>
-        <a class="share-button" href="${shareLinks.twitter}" target="_blank" rel="noopener noreferrer">X</a>
-        <a class="share-button" href="${shareLinks.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
-        <a class="share-button" href="${shareLinks.whatsapp}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a class="share-button" href="${shareLinks.x}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on X (opens in new window)">X</a>
+        <a class="share-button" href="${shareLinks.facebook}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on Facebook (opens in new window)">Facebook</a>
+        <a class="share-button" href="${shareLinks.whatsapp}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on WhatsApp (opens in new window)">WhatsApp</a>
       </div>
       <div class="activity-card-actions">
         ${
