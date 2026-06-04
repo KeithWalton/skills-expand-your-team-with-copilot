@@ -306,6 +306,25 @@ document.addEventListener("DOMContentLoaded", () => {
     return details.schedule;
   }
 
+  function getShareLinks(activityName) {
+    const activityUrl = `${window.location.origin}/?activity=${encodeURIComponent(
+      activityName
+    )}`;
+    const shareText = `Check out "${activityName}" at Mergington High School!`;
+
+    return {
+      x: `https://x.com/intent/tweet?text=${encodeURIComponent(
+        shareText
+      )}&url=${encodeURIComponent(activityUrl)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        activityUrl
+      )}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(
+        `${shareText} ${activityUrl}`
+      )}`,
+    };
+  }
+
   // Function to determine activity type (this would ideally come from backend)
   function getActivityType(activityName, description) {
     const name = activityName.toLowerCase();
@@ -509,6 +528,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Format the schedule using the new helper function
     const formattedSchedule = formatSchedule(details);
+    const shareLinks = getShareLinks(name);
 
     // Create activity tag
     const tagHtml = `
@@ -567,6 +587,10 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("")}
         </ul>
       </div>
+      <div class="share-actions">
+        <span class="share-label">Share:</span>
+        <div class="share-links"></div>
+      </div>
       <div class="activity-card-actions">
         ${
           currentUser
@@ -590,6 +614,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteButtons = activityCard.querySelectorAll(".delete-participant");
     deleteButtons.forEach((button) => {
       button.addEventListener("click", handleUnregister);
+    });
+
+    const shareLinksContainer = activityCard.querySelector(".share-links");
+    const sharePlatforms = [
+      { label: "X", url: shareLinks.x, networkName: "X" },
+      {
+        label: "Facebook",
+        url: shareLinks.facebook,
+        networkName: "Facebook",
+      },
+      {
+        label: "WhatsApp",
+        url: shareLinks.whatsapp,
+        networkName: "WhatsApp",
+      },
+    ];
+
+    sharePlatforms.forEach((platform) => {
+      const shareLink = document.createElement("a");
+      shareLink.className = "share-button";
+      shareLink.href = platform.url;
+      shareLink.target = "_blank";
+      shareLink.rel = "noopener noreferrer";
+      shareLink.textContent = platform.label;
+      shareLink.setAttribute(
+        "aria-label",
+        `Share ${name} on ${platform.networkName} (opens in new window)`
+      );
+      shareLinksContainer.appendChild(shareLink);
     });
 
     // Add click handler for register button (only when authenticated)
