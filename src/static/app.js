@@ -304,6 +304,25 @@ document.addEventListener("DOMContentLoaded", () => {
     return details.schedule;
   }
 
+  function getShareLinks(activityName) {
+    const activityUrl = `${window.location.origin}/#activity=${encodeURIComponent(
+      activityName
+    )}`;
+    const shareText = `Check out "${activityName}" at Mergington High School!`;
+
+    return {
+      x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        shareText
+      )}&url=${encodeURIComponent(activityUrl)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        activityUrl
+      )}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(
+        `${shareText} ${activityUrl}`
+      )}`,
+    };
+  }
+
   // Function to determine activity type (this would ideally come from backend)
   function getActivityType(activityName, description) {
     const name = activityName.toLowerCase();
@@ -498,6 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Format the schedule using the new helper function
     const formattedSchedule = formatSchedule(details);
+    const shareLinks = getShareLinks(name);
 
     // Create activity tag
     const tagHtml = `
@@ -551,6 +571,12 @@ document.addEventListener("DOMContentLoaded", () => {
             )
             .join("")}
         </ul>
+      </div>
+      <div class="share-actions">
+        <span class="share-label">Share:</span>
+        <a class="share-button" href="${shareLinks.x}" target="_blank" rel="noopener noreferrer">X</a>
+        <a class="share-button" href="${shareLinks.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a class="share-button" href="${shareLinks.whatsapp}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
       </div>
       <div class="activity-card-actions">
         ${
