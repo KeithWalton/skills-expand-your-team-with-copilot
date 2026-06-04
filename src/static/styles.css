@@ -220,7 +220,7 @@ section h3 {
 
 .share-button:hover {
   border-color: var(--primary-light);
-  background-color: #eef0ff;
+  background-color: var(--border-light);
 }
 
 /* Activity Tag */
