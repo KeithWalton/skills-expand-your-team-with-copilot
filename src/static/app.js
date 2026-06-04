@@ -323,6 +323,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  function escapeHtmlAttribute(text) {
+    return text
+      .replaceAll("&", "&amp;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+  }
+
   // Function to determine activity type (this would ideally come from backend)
   function getActivityType(activityName, description) {
     const name = activityName.toLowerCase();
@@ -518,6 +527,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Format the schedule using the new helper function
     const formattedSchedule = formatSchedule(details);
     const shareLinks = getShareLinks(name);
+    const safeActivityNameForAttribute = escapeHtmlAttribute(name);
 
     // Create activity tag
     const tagHtml = `
@@ -574,9 +584,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="share-actions">
         <span class="share-label">Share:</span>
-        <a class="share-button" href="${shareLinks.x}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on X (opens in new window)">X</a>
-        <a class="share-button" href="${shareLinks.facebook}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on Facebook (opens in new window)">Facebook</a>
-        <a class="share-button" href="${shareLinks.whatsapp}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on WhatsApp (opens in new window)">WhatsApp</a>
+        <a class="share-button" href="${shareLinks.x}" target="_blank" rel="noopener noreferrer" aria-label="Share ${safeActivityNameForAttribute} on X (opens in new window)">X</a>
+        <a class="share-button" href="${shareLinks.facebook}" target="_blank" rel="noopener noreferrer" aria-label="Share ${safeActivityNameForAttribute} on Facebook (opens in new window)">Facebook</a>
+        <a class="share-button" href="${shareLinks.whatsapp}" target="_blank" rel="noopener noreferrer" aria-label="Share ${safeActivityNameForAttribute} on WhatsApp (opens in new window)">WhatsApp</a>
       </div>
       <div class="activity-card-actions">
         ${
